@@ -4,6 +4,9 @@ import android.net.NetworkInfo;
 
 import java.util.Locale;
 
+/**
+ * Represents the device's network connectivity type.
+ */
 public enum ConnectivityType {
     TYPE_NONE("none"),
     WIFI("wifi"),
@@ -36,7 +39,6 @@ public enum ConnectivityType {
     TYPE_3G("3g"),
     TYPE_4G("4g");
 
-    private static final String TAG = ConnectivityType.class.getSimpleName();
     public final String value;
 
     ConnectivityType(final String value) {

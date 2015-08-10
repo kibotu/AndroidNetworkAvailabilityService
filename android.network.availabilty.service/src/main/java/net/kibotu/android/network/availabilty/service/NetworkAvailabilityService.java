@@ -18,7 +18,24 @@ import java.util.List;
 import static net.kibotu.android.network.availabilty.service.ConnectivityType.TYPE_NONE;
 import static net.kibotu.android.network.availabilty.service.ConnectivityType.getTypeForNetworkInfo;
 
-
+/**
+ * Service for change and on demand network availability checks.
+ * <p/>
+ * <pre>
+ * NetworkAvailabilityService.initialize(context)
+ * NetworkAvailabilityService.unregister()
+ * NetworkAvailabilityService.isConnected()
+ * NetworkAvailabilityService.isRechable(new IReachabilityHandler())
+ * NetworkAvailabilityService.isRechable(uri, new IReachabilityHandler())
+ * NetworkAvailabilityService.addIConnectivityChangeListener(new IConnectivityChangeListener())
+ * </pre>
+ * <p/>
+ * Required permissions
+ * <pre>
+ * android.permission.ACCESS_NETWORK_STATE
+ * android.permission.INTERNET
+ * android.permission.READ_PHONE_STATE</pre>
+ */
 public class NetworkAvailabilityService {
 
     private static final String TAG = NetworkAvailabilityService.class.getSimpleName();
@@ -28,16 +45,22 @@ public class NetworkAvailabilityService {
     private BroadcastReceiver receiver;
     private Context context;
 
+    /**
+     * Constructs Service.
+     *
+     * @param context Application context.
+     */
     private NetworkAvailabilityService(final Context context) {
         this.context = context;
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         connectivityChangeListener = new ArrayList<IConnectivityChangeListener>(0);
     }
 
+
     /**
-     * Requires
-     * <p><code>android.permission.ACCESS_NETWORK_STATE</code></p>
-     * <code>android.permission.INTERNET</code>
+     * Initializes service.
+     *
+     * @param context Application context.
      */
     public static void initialize(final Context context) {
         if (instance != null)
@@ -49,6 +72,11 @@ public class NetworkAvailabilityService {
         }
     }
 
+    /**
+     * Returns if service has been initialized.
+     *
+     * @return <code>true</code> if it has been initialized.
+     */
     private static boolean isInit() {
         final boolean isInit = instance != null;
         if (!isInit)
@@ -56,6 +84,11 @@ public class NetworkAvailabilityService {
         return isInit;
     }
 
+    /**
+     * Gets active network info.
+     *
+     * @return Active {@link android.net.NetworkInfo}
+     */
     public static NetworkInfo getActiveNetworkInfo() {
         if (!isInit())
             return null;
@@ -63,6 +96,11 @@ public class NetworkAvailabilityService {
         return instance.getConnectivityManager().getActiveNetworkInfo();
     }
 
+    /**
+     * Returns if device is connected.
+     *
+     * @return <code>true</code> if device is connected.
+     */
     public static boolean isConnected() {
         if (!isInit())
             return false;
@@ -71,10 +109,21 @@ public class NetworkAvailabilityService {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    /**
+     * Triggers async call to invoke a website in order to reliably find out if the device has network access.
+     *
+     * @param handler {@link IReachabilityHandler}
+     */
     public static void isReachable(final IReachabilityHandler handler) {
         isReachable("http://www.google.com", handler);
     }
 
+    /**
+     * Triggers async call to invoke a website in order to reliably find out if the device has network access.
+     *
+     * @param uri     Testing uri to check reachability.
+     * @param handler {@link IReachabilityHandler}
+     */
     public static void isReachable(final String uri, final IReachabilityHandler handler) {
         if (!isInit())
             return;
@@ -95,6 +144,12 @@ public class NetworkAvailabilityService {
         }.execute();
     }
 
+    /**
+     * Actual reachability test against a specific uri.
+     *
+     * @param uri Testing uri to check reachability.
+     * @return <code>true</code> if successfully reached website.
+     */
     private static boolean isReachable(final String uri) {
         // First, check we have any sort of connectivity
         boolean isReachable = false;
@@ -124,12 +179,20 @@ public class NetworkAvailabilityService {
         return isReachable;
     }
 
+    /**
+     * Returns active connectivity type.
+     *
+     * @return {@link ConnectivityType}
+     */
     public static ConnectivityType getType() {
         return isConnected()
                 ? getTypeForNetworkInfo(getActiveNetworkInfo())
                 : TYPE_NONE;
     }
 
+    /**
+     * Unregisters internal connectivity broadcast receiver. Also clears network change listener.
+     */
     public static void unregister() {
         if (!isInit())
             return;
@@ -147,14 +210,27 @@ public class NetworkAvailabilityService {
         }
     }
 
+    /**
+     * Adds connectivity change listener.
+     *
+     * @param listener {@link IConnectivityChangeListener}
+     */
     public static void addIConnectivityChangeListener(final IConnectivityChangeListener listener) {
         instance.connectivityChangeListener.add(listener);
     }
 
+    /**
+     * Removes connectivity change listener.
+     *
+     * @param listener {@link IConnectivityChangeListener}
+     */
     public static void removeIConnectivityChangeListener(final IConnectivityChangeListener listener) {
         instance.connectivityChangeListener.remove(listener);
     }
 
+    /**
+     * Initializes service.
+     */
     private void init() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -169,11 +245,22 @@ public class NetworkAvailabilityService {
         }
     }
 
+    /**
+     * Notifies all connectivity change listener.
+     *
+     * @param isConnected <code>true</code> if device is connected.
+     * @param type        {@link ConnectivityType}
+     */
     private void notifyConnectivityChangeListener(final boolean isConnected, final ConnectivityType type) {
         for (final IConnectivityChangeListener listener : connectivityChangeListener)
             listener.onConnectivityChange(isConnected, type);
     }
 
+    /**
+     * Getter for connectivity manager.
+     *
+     * @return
+     */
     private ConnectivityManager getConnectivityManager() {
         return connectivityManager;
     }
