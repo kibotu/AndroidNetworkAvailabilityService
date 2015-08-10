@@ -6,6 +6,14 @@ Easy way to check reachability access on demand and to handle network reachabili
 
 ## How to install
 
+	repositories {
+	    // ...
+	    maven { url "https://jitpack.io" }
+	}
+	
+	dependencies {
+        compile 'com.github.kibotu:AndroidNetworkAvailabilityService:e9cfac5ab9'
+    }
 
 ### Required permissions
  
@@ -59,7 +67,7 @@ Easy way to check reachability access on demand and to handle network reachabili
         }
     });
     
-## Network change
+## Network change events
 
 ### Add listener
 
