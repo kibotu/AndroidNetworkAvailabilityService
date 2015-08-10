@@ -12,7 +12,7 @@ Easy way to check reachability access on demand and to handle network reachabili
 	}
 	
 	dependencies {
-        compile 'com.github.kibotu:AndroidNetworkAvailabilityService:e9cfac5ab9'
+        compile 'com.github.kibotu:AndroidNetworkAvailabilityService:1.0.0-SNAPSHOT'
     }
 
 ### Required permissions
