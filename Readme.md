@@ -1,4 +1,4 @@
-# Reliable Android Network Reachability Service
+# Reliable Android Network Reachability Service [![Jitpack.io](https://img.shields.io/github/tag/kibotu/AndroidNetworkAvailabilityService.svg?label=JitPack)](https://jitpack.io/#kibotu/AndroidNetworkAvailabilityService/1.0.0-SNAPSHOT)
 
 ## Introduction
 
