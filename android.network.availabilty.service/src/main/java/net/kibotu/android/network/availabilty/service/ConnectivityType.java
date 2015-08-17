@@ -52,6 +52,10 @@ public enum ConnectivityType {
         String type = info.getTypeName().toLowerCase(Locale.US);
         if (type.equals(WIFI.value)) {
             return TYPE_WIFI;
+        } else if (type.equals(TYPE_ETHERNET.value)) {
+            return TYPE_ETHERNET;
+        } else if (type.equals(WIMAX.value)) {
+            return WIMAX;
         } else if (type.equals(MOBILE.value) || type.equals(CELLULAR.value)) {
             type = info.getSubtypeName();
             if (type.equals(GSM.value)
