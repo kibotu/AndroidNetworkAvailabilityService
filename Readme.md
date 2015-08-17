@@ -1,4 +1,4 @@
-# Reliable Android Network Reachability Service [![Jitpack.io](https://img.shields.io/github/tag/kibotu/AndroidNetworkAvailabilityService.svg?label=JitPack)](https://jitpack.io/#kibotu/AndroidNetworkAvailabilityService/1.0.0-SNAPSHOT)
+# Reliable Android Network Reachability Service [![Jitpack.io](https://img.shields.io/github/tag/kibotu/AndroidNetworkAvailabilityService.svg?label=JitPack)](https://jitpack.io/#kibotu/AndroidNetworkAvailabilityService/1.0.1-SNAPSHOT)
 
 ## Introduction
 
@@ -12,7 +12,7 @@ Easy way to check reachability access on demand and to handle network reachabili
 	}
 	
 	dependencies {
-        compile 'com.github.kibotu:AndroidNetworkAvailabilityService:1.0.0-SNAPSHOT'
+        compile 'com.github.kibotu:AndroidNetworkAvailabilityService:1.0.1-SNAPSHOT'
     }
 
 ### Required permissions
